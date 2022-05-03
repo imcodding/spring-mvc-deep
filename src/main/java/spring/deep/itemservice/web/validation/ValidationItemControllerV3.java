@@ -44,6 +44,14 @@ public class ValidationItemControllerV3 {
     @PostMapping("/add")
     public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
+        //Object 처리. 필드는 어노테이션으로 처리하고 오브젝트는 클래스에서 처리 권장
+        if(item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if(resultPrice < 10000) {
+                bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
+            }
+        }
+
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "validation/v2/addForm";
