@@ -54,26 +54,39 @@ public class ValidationItemControllerV3 {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "validation/v2/addForm";
+            return "validation/v3/addForm";
         }
 
         //성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/validation/v2/items/{itemId}";
+        return "redirect:/validation/v3/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "validation/v2/editForm";
+        return "validation/v3/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+    public String edit(@PathVariable Long itemId, @Validated @ModelAttribute Item item, BindingResult bindingResult) {
+
+        if(item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if(resultPrice < 10000) {
+                bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "validation/v3/editForm";
+        }
+
         itemRepository.update(itemId, item);
-        return "redirect:/validation/v2/items/{itemId}";
+        return "redirect:/validation/v3/items/{itemId}";
     }
 }
