@@ -1,9 +1,11 @@
-package spring.deep.itemservice;
+package spring.deep;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import spring.deep.itemservice.domain.item.Item;
 import spring.deep.itemservice.domain.item.ItemRepository;
+import spring.deep.login.domain.member.Member;
+import spring.deep.login.domain.member.MemberRepository;
 
 import javax.annotation.PostConstruct;
 
@@ -12,6 +14,7 @@ import javax.annotation.PostConstruct;
 public class TestDataInit {
 
     private final ItemRepository itemRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 테스트용 데이터 추가
@@ -20,6 +23,13 @@ public class TestDataInit {
     public void init() {
         itemRepository.save(new Item("itemA", 10000, 10));
         itemRepository.save(new Item("itemB", 20000, 20));
+
+        Member member = new Member();
+        member.setLoginId("test");
+        member.setPassword("test!");
+        member.setName("테스터");
+
+        memberRepository.save(member);
     }
 
 }
