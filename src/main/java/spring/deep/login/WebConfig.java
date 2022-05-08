@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import spring.deep.login.web.filter.LogFilter;
 import spring.deep.login.web.filter.LoginCheckFilter;
 import spring.deep.login.web.interceptor.LogInterceptor;
+import spring.deep.login.web.interceptor.LoginInterceptor;
 
 import javax.servlet.Filter;
 
@@ -20,6 +21,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/css/**", "/*.ico", "/errors");
+
+        registry.addInterceptor(new LoginInterceptor())
+                .order(2)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/members/add", "/login", "/logout",
+                        "/css/**", "/*.ico", "/error");
     }
 
 //    @Bean
