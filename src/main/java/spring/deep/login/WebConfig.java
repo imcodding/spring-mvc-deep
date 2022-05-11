@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import spring.deep.exception.interceptor.LogInterceptor;
 import spring.deep.login.web.argumentResolver.LoginMemberArgumentResolver;
 import spring.deep.login.web.filter.LogFilter;
 import spring.deep.login.web.filter.LoginCheckFilter;
-import spring.deep.login.web.interceptor.LogInterceptor;
 import spring.deep.login.web.interceptor.LoginInterceptor;
 
 import javax.servlet.Filter;
@@ -28,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LogInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**", "/*.ico", "/errors");
+                .excludePathPatterns("/css/**", "/*.ico", "/errors", "/error-page/**");
 
         registry.addInterceptor(new LoginInterceptor())
                 .order(2)
