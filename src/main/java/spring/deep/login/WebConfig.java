@@ -4,9 +4,12 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import spring.deep.exception.interceptor.LogInterceptor;
+import spring.deep.exception.resolver.MyHandlerExceptionResolver;
+import spring.deep.exception.resolver.UserHandlerExceptionResolver;
 import spring.deep.login.web.argumentResolver.LoginMemberArgumentResolver;
 import spring.deep.login.web.filter.LogFilter;
 import spring.deep.login.web.filter.LoginCheckFilter;
@@ -21,6 +24,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new LoginMemberArgumentResolver());
+    }
+
+    @Override
+    public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
+        resolvers.add(new MyHandlerExceptionResolver());
+        resolvers.add(new UserHandlerExceptionResolver());
     }
 
     @Override
