@@ -3,9 +3,13 @@ package spring.deep.exception.api;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import spring.deep.exception.BadRequestException;
 import spring.deep.exception.UserException;
 
 @Slf4j
@@ -27,7 +31,21 @@ public class ApiExceptionController {
         return new MemberDto(id, "hello " + id);
     }
 
-    @Data
+    @GetMapping("/api/response-status-ex1")
+    public String responseStatusEx1() {
+        throw new BadRequestException();
+    }
+
+    @GetMapping("/api/response-status-ex2")
+    public String responseStatusEx2() {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "잘못된 요청 오류", new IllegalArgumentException());
+    }
+
+    @GetMapping("/api/default-handler-ex")
+    public String defaultException(@RequestParam Integer data) {
+        return "ok";
+    }
+    
     @AllArgsConstructor
     static class MemberDto {
         private String memberId;
