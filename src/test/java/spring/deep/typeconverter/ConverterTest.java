@@ -2,7 +2,10 @@ package spring.deep.typeconverter;
 
 import org.junit.jupiter.api.Test;
 import spring.deep.typeconverter.converter.IntegerToStringConverter;
+import spring.deep.typeconverter.converter.IpPortToStringConverter;
 import spring.deep.typeconverter.converter.StringToIntegerConverter;
+import spring.deep.typeconverter.converter.StringToIpPortConverter;
+import spring.deep.typeconverter.type.IpPort;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -22,4 +25,19 @@ public class ConverterTest {
         assertThat(result).isEqualTo("10");
     }
 
+    @Test
+    void stringToIpPort() {
+        StringToIpPortConverter converter = new StringToIpPortConverter();
+        String source = "127.0.0.1:8080";
+        IpPort result = converter.convert(source);
+        assertThat(result).isEqualTo(new IpPort("127.0.0.1", 8080));
+    }
+
+    @Test
+    void ipPortToString() {
+        IpPortToStringConverter converter = new IpPortToStringConverter();
+        IpPort source = new IpPort("127.0.0.1", 8080);
+        String result = converter.convert(source);
+        assertThat(result).isEqualTo("127.0.0.1:8080");
+    }
 }
