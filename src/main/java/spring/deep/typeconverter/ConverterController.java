@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import spring.deep.typeconverter.type.IpPort;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +26,13 @@ public class ConverterController {
         //hello-v1?data=10
         //request 데이터는 문자 10이 넘어오는데 스프링이 타입변환 해줌(@RequestParam)
         log.info("data = {}", data);
+        return "ok";
+    }
+
+    @GetMapping("/ip-port")
+    public String ipPort(@RequestParam IpPort ipPort) { //스프링이 ConversionService 를 사용해서 타입을 변환함
+        System.out.println("ipPort IP = " + ipPort.getIp());
+        System.out.println("ipPort PORT = " + ipPort.getPort());
         return "ok";
     }
 }

@@ -1,8 +1,9 @@
-package spring.deep.login;
+package spring.deep;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,12 +15,25 @@ import spring.deep.login.web.argumentResolver.LoginMemberArgumentResolver;
 import spring.deep.login.web.filter.LogFilter;
 import spring.deep.login.web.filter.LoginCheckFilter;
 import spring.deep.login.web.interceptor.LoginInterceptor;
+import spring.deep.typeconverter.converter.IntegerToStringConverter;
+import spring.deep.typeconverter.converter.IpPortToStringConverter;
+import spring.deep.typeconverter.converter.StringToIntegerConverter;
+import spring.deep.typeconverter.converter.StringToIpPortConverter;
 
 import javax.servlet.Filter;
 import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    // 컨버터 등록
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new StringToIntegerConverter());
+        registry.addConverter(new IntegerToStringConverter());
+        registry.addConverter(new StringToIpPortConverter());
+        registry.addConverter(new IpPortToStringConverter());
+    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
