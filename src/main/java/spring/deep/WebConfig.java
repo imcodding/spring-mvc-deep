@@ -19,6 +19,7 @@ import spring.deep.typeconverter.converter.IntegerToStringConverter;
 import spring.deep.typeconverter.converter.IpPortToStringConverter;
 import spring.deep.typeconverter.converter.StringToIntegerConverter;
 import spring.deep.typeconverter.converter.StringToIpPortConverter;
+import spring.deep.typeconverter.formatter.MyNumberFormatter;
 
 import javax.servlet.Filter;
 import java.util.List;
@@ -29,10 +30,13 @@ public class WebConfig implements WebMvcConfigurer {
     // 컨버터 등록
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToIntegerConverter());
-        registry.addConverter(new IntegerToStringConverter());
+        //주석처리 우선순위 (포맷터랑 겹치기 때문에)
+        //registry.addConverter(new StringToIntegerConverter());
+        //registry.addConverter(new IntegerToStringConverter());
         registry.addConverter(new StringToIpPortConverter());
         registry.addConverter(new IpPortToStringConverter());
+
+        registry.addFormatter(new MyNumberFormatter());
     }
 
     @Override
